@@ -4,7 +4,7 @@ Created on Fri Jan 28 11:13:42 2022
 
 @author: Borja Garcia
 
-Toolbars and Actions
+Introducing Dialogs
 
 """
 
@@ -14,6 +14,21 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 import sys 
+
+class CustomDialog(QDialog):
+    
+    def __init__(self, *args, **kwargs):
+        super(CustomDialog, self).__init__(*args, **kwargs)
+        
+        self.setWindowTitle("Hello! Im a custom dialog")
+        QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+        self.buttonBox = QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.buttonBox)
+        self.setLayout(self.layout)
 
 class MainWindow(QMainWindow):
     
@@ -71,6 +86,12 @@ class MainWindow(QMainWindow):
         
     def onMyToolBarButtonClick(self, s):
         print("click", s)
+        
+        # Annadiendo Dialgo al boton
+        # El dialogo bloquea la ejecucion de la aplicacion
+        dlg = CustomDialog(self)
+        if( dlg.exec_() ):
+            print("Succes!")
 
 app = QApplication(sys.argv)
 
